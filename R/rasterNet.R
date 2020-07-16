@@ -1,4 +1,4 @@
-#' @import sp
+#' @import sp raster
 rasterNet <- function (x, resolution = NULL, xbin = NULL, ybin = NULL, mask = FALSE,
                        degree = 111325, xOffset = NULL, yOffset = NULL, checkerboard = FALSE,
                        maxpixels = 250000)
@@ -18,7 +18,7 @@ rasterNet <- function (x, resolution = NULL, xbin = NULL, ybin = NULL, mask = FA
   }
   else {
     if (sp::is.projected(sp::SpatialPoints((matrix(1:10,
-                                                   5, byrow = FALSE)), proj4string = sp::crs(x)))) {
+                                                   5, byrow = FALSE)), proj4string = raster::crs(x)))) {
       resolution <- resolution
     }
     else {
@@ -27,15 +27,15 @@ rasterNet <- function (x, resolution = NULL, xbin = NULL, ybin = NULL, mask = FA
   }
   if (!is.null(xbin) && is.null(ybin)) {
     rasterNet <- raster::raster(ext, nrow = 1, ncol = xbin,
-                                crs = sp::crs(x))
+                                crs = raster::crs(x))
   }
   else if (is.null(xbin) && !is.null(ybin)) {
     rasterNet <- raster::raster(ext, nrow = ybin, ncol = 1,
-                                crs = sp::crs(x))
+                                crs = raster::crs(x))
   }
   else if (!is.null(xbin) && !is.null(ybin)) {
     rasterNet <- raster::raster(ext, nrow = ybin, ncol = xbin,
-                                crs = sp::crs(x))
+                                crs = raster::crs(x))
   }
   else if (is.null(xbin) && is.null(ybin) && !is.null(resolution)) {
     xrange <- raster::xmax(x) - raster::xmin(x)
@@ -71,7 +71,7 @@ rasterNet <- function (x, resolution = NULL, xbin = NULL, ybin = NULL, mask = FA
       yPix <- yPix + 1
     }
     rasterNet <- raster::raster(ext, nrow = yPix, ncol = xPix,
-                                crs = sp::crs(x))
+                                crs = raster::crs(x))
   }
   else stop("A value should be specified for the block size")
   if (checkerboard == TRUE) {
