@@ -23,8 +23,8 @@ block.cv <- function(locations, nblock.x, nblock.y, nblock.t, nfold) {
   locations.s <- unique(locations[, 1:2])
   names(locations) <- c("xx", "yy", "tt")
   names(locations.s) <- c("xx", "yy")
-  coordinates(locations) <- ~ xx + yy
-  coordinates(locations.s) <- ~ xx + yy
+  sp::coordinates(locations) <- ~ xx + yy
+  sp::coordinates(locations.s) <- ~ xx + yy
 
   net <- rasterNet(locations.s, xbin = nblock.x, ybin = nblock.y)
   # plot(net)
