@@ -1,6 +1,11 @@
 rm(list = ls())
 
 # library
+library(devtools)
+install_github("funstatpackages/BPST")
+install_github("funstatpackages/Triangulation")
+install_github("funstatpackages/TPST")
+install_github("funstatpackages/STARX")
 library(Triangulation)
 library(STARX)
 
