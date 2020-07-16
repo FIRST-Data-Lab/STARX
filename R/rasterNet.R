@@ -1,6 +1,7 @@
-rasterNet <- function (x, resolution = NULL, xbin = NULL, ybin = NULL, mask = FALSE, 
-          degree = 111325, xOffset = NULL, yOffset = NULL, checkerboard = FALSE, 
-          maxpixels = 250000) 
+#' @import sp
+rasterNet <- function (x, resolution = NULL, xbin = NULL, ybin = NULL, mask = FALSE,
+                       degree = 111325, xOffset = NULL, yOffset = NULL, checkerboard = FALSE,
+                       maxpixels = 250000)
 {
   ext <- raster::extent(x)
   extRef <- raster::extent(x)
@@ -8,16 +9,16 @@ rasterNet <- function (x, resolution = NULL, xbin = NULL, ybin = NULL, mask = FA
     mapext <- raster::extent(x)[1:4]
     if (mapext >= -180 && mapext <= 180) {
       resolution <- resolution/degree
-      warning("The input layer has no CRS defined. Based on the extent of the input map it is assumed to have an un-projected reference system")
+      # warning("The input layer has no CRS defined. Based on the extent of the input map it is assumed to have an un-projected reference system")
     }
     else {
       resolution <- resolution
-      warning("The input layer has no CRS defined. Based on the extent of the input map it is assumed to have a projected reference system")
+      # warning("The input layer has no CRS defined. Based on the extent of the input map it is assumed to have a projected reference system")
     }
   }
   else {
-    if (sp::is.projected(sp::SpatialPoints((matrix(1:10, 
-                                                   5, byrow = FALSE)), proj4string = crs(x)))) {
+    if (sp::is.projected(sp::SpatialPoints((matrix(1:10,
+                                                   5, byrow = FALSE)), proj4string = sp::crs(x)))) {
       resolution <- resolution
     }
     else {
@@ -25,16 +26,16 @@ rasterNet <- function (x, resolution = NULL, xbin = NULL, ybin = NULL, mask = FA
     }
   }
   if (!is.null(xbin) && is.null(ybin)) {
-    rasterNet <- raster::raster(ext, nrow = 1, ncol = xbin, 
-                                crs = crs(x))
+    rasterNet <- raster::raster(ext, nrow = 1, ncol = xbin,
+                                crs = sp::crs(x))
   }
   else if (is.null(xbin) && !is.null(ybin)) {
-    rasterNet <- raster::raster(ext, nrow = ybin, ncol = 1, 
-                                crs = crs(x))
+    rasterNet <- raster::raster(ext, nrow = ybin, ncol = 1,
+                                crs = sp::crs(x))
   }
   else if (!is.null(xbin) && !is.null(ybin)) {
-    rasterNet <- raster::raster(ext, nrow = ybin, ncol = xbin, 
-                                crs = crs(x))
+    rasterNet <- raster::raster(ext, nrow = ybin, ncol = xbin,
+                                crs = sp::crs(x))
   }
   else if (is.null(xbin) && is.null(ybin) && !is.null(resolution)) {
     xrange <- raster::xmax(x) - raster::xmin(x)
@@ -69,8 +70,8 @@ rasterNet <- function (x, resolution = NULL, xbin = NULL, ybin = NULL, mask = FA
       ext@ymin <- ext@ymin - resolution
       yPix <- yPix + 1
     }
-    rasterNet <- raster::raster(ext, nrow = yPix, ncol = xPix, 
-                                crs = crs(x))
+    rasterNet <- raster::raster(ext, nrow = yPix, ncol = xPix,
+                                crs = sp::crs(x))
   }
   else stop("A value should be specified for the block size")
   if (checkerboard == TRUE) {
@@ -94,7 +95,7 @@ rasterNet <- function (x, resolution = NULL, xbin = NULL, ybin = NULL, mask = FA
     if (methods::is(x, "Raster")) {
       points <- raster::rasterToPoints(x[[1]], spatial = TRUE)
       if (nrow(points) > 750000) {
-        points2 <- points[sample(1:nrow(points), maxpixels, 
+        points2 <- points[sample(1:nrow(points), maxpixels,
                                  replace = FALSE), ]
         rasterNet <- raster::intersect(rasterNet, points2)
       }
