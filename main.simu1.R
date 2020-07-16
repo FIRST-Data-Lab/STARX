@@ -12,35 +12,38 @@ library(STARX)
 nS <- 200
 nT <- 50
 sigma <- 1
-N <- 4 # number of interior knots
-d <- 2
-r <- 1
-rho <- 3
+N <- 4 # Number of interior knots.
+d <- 2 # Degree of bivariate spline.
+r <- 1 # smoothness of bivariate spline.
+rho <- 3 # order of univariate spline.
 time.bound <- c(0, 1)
+# boundary of spatial domain
+data("horseshoe.b")
+plot(horseshoe.b$V1, horseshoe.b$V2, type = "l", xlab = '', ylab = '')
 
 # load triangulation
 data("Tr.hs.1")
 data("V.hs.1")
-data("horseshoe.b")
-plot(horseshoe.b$V1, horseshoe.b$V2, type = "l", xlab = '', ylab = '')
 TriPlot(V.hs.1, Tr.hs.1)
 
 # generate simulation data
 data.simu <- simu1.data.generating(nS, nT, sigma)
 
-# knots
+# knots for univariate splines
 probs <- seq(time.bound[1], time.bound[2], length.out = N + 2)
 time.knots <- quantile(data.simu$location[, 3], probs = probs)[-c(1, N + 2)]
 
 # fit model -------------------------------------------------------------
+# tuning parameters for smoothness penalty
 Lambda1 <- exp(seq(log(0.001), log(1000), length.out = 5))
 Lambda2 <- exp(seq(log(0.001), log(1000), length.out = 5))
 Lambda <- expand.grid(Lambda1, Lambda2)
 
+# model fitting
 mfit1 <- stvcm.fit(data = data.simu, Lambda, V.hs.1, Tr.hs.1, d, r,
                    time.knots, rho, time.bound)
-mfit1$n.X
 
+# sequence of spatial plots of estimated coefficient functions.
 ngrid.x <- 40
 ngrid.y <- 20
 ngrid.t <- 6

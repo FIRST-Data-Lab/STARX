@@ -13,17 +13,19 @@ nS <- 100
 nT <- 30
 sigma <- 0.5
 alpha <- 0.5
-N <- 4 # number of interior knots
-d <- 2
-r <- 1
-rho <- 3
+N <- 4 # Number of interior knots.
+d <- 2 # Degree of bivariate spline.
+r <- 1 # smoothness of bivariate spline.
+rho <- 3 # order of univariate spline.
 time.bound <- c(0, 1)
+# boundary of spatial domain
+data("horseshoe.b")
+plot(horseshoe.b$V1, horseshoe.b$V2, type = "l", xlab = '', ylab = '')
+
 
 # load triangulation
 data("Tr.hs.1")
 data("V.hs.1")
-data("horseshoe.b")
-plot(horseshoe.b$V1, horseshoe.b$V2, type = "l", xlab = '', ylab = '')
 TriPlot(V.hs.1, Tr.hs.1)
 
 # generate simulation data
