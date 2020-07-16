@@ -22,5 +22,6 @@ Imports:
     sp,
     ggplot2,
     stats,
-    MGLM
+    MGLM,
+    splines2
 Suggests: Triangulation
