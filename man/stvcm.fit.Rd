@@ -41,11 +41,12 @@ and usually \code{d} is greater than one. -1 represents piecewise constant.}
 
 \item{time.knots}{The vector of interior time.knots for univariate spline.}
 
-\item{rho}{The order of univariate spline.
-#' @param intercept.X A logical number indicating whether to include varying intercept term
-in the model -- default is \code{TRUE}.}
+\item{rho}{The order of univariate spline.}
 
 \item{time.bound}{The vector of two. The boundary of univariate spline.}
+
+\item{intercept.X}{A logical number indicating whether to include varying intercept term
+in the model -- default is \code{TRUE}.}
 
 \item{intercept.Z}{A logical number indicating whether to include constant intercept term
 in the model -- default is \code{FALSE}.}

@@ -2,7 +2,7 @@
 #'
 #' This function fits a spatiotemporal varying coefficient model.
 #'
-#' @import TPST Matrix
+#' @import TPST Matrix stats MGLM
 #' @param data A list of five containing the data to fit model. \code{Y} is the
 #' response variable. \code{Z} is exogenous variables with constant linear
 #' coefficients. \code{X} is exogenous variables with varying linear
@@ -19,7 +19,7 @@
 #' @param time.knots The vector of interior time.knots for univariate spline.
 #' @param time.bound The vector of two. The boundary of univariate spline.
 #' @param rho The order of univariate spline.
-#' #' @param intercept.X A logical number indicating whether to include varying intercept term
+#' @param intercept.X A logical number indicating whether to include varying intercept term
 #' in the model -- default is \code{TRUE}.
 #' @param intercept.Z A logical number indicating whether to include constant intercept term
 #' in the model -- default is \code{FALSE}.

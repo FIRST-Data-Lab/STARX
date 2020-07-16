@@ -3,7 +3,7 @@
 #' This function fits a spatiotemporal autoregressive (STAR) model
 #' with exogenous variables.
 #'
-#' @import TPST Matrix
+#' @import TPST Matrix MGLM
 #' @param data A list of five containing the data to fit model. \code{Y} is the
 #' response variable. \code{Z} is exogenous variables with constant linear
 #' coefficients. \code{X} is exogenous variables with varying linear

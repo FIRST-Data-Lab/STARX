@@ -75,7 +75,7 @@ rasterNet <- function (x, resolution = NULL, xbin = NULL, ybin = NULL, mask = FA
   }
   else stop("A value should be specified for the block size")
   if (checkerboard == TRUE) {
-    values(rasterNet) <- 1:raster::ncell(rasterNet)
+    raster::values(rasterNet) <- 1:raster::ncell(rasterNet)
     m <- as.matrix(rasterNet)
     for (i in 1:ncol(rasterNet)) {
       if (i%%2 == 0) {
@@ -88,7 +88,7 @@ rasterNet <- function (x, resolution = NULL, xbin = NULL, ybin = NULL, mask = FA
     rasterNet[] <- m
   }
   else {
-    values(rasterNet) <- 1:raster::ncell(rasterNet)
+    raster::values(rasterNet) <- 1:raster::ncell(rasterNet)
   }
   rasterNet <- raster::rasterToPolygons(rasterNet)
   if (mask == TRUE) {
