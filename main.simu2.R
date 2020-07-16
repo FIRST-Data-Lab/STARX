@@ -41,7 +41,10 @@ Lambda <- expand.grid(Lambda1, Lambda2)
 mfit1 <- star.fit(data = data.simu, Lambda, V.hs.1, Tr.hs.1, d, r, time.knots, rho,
                  time.bound, return.se = TRUE)
 
-
+# Estimated parameters in STAR-PLVCM.
+c(mfit1$alpha.hat, mfit1$mse, mfit1$theta.hat[1:mfit1$n.Z])
+# Estimated standard deviation
+mfit1$se.eta
 # sequence of spatial plots of estimated coefficient functions.
 ngrid.x <- 40
 ngrid.y <- 20
@@ -73,3 +76,7 @@ alpha.true <- 0.5
 
 result <- eval.star(fitted = mfit1, beta.true, eta.true,
                     alpha.true, data.grid)
+
+result$mse.alpha
+result$mse.eta
+result$mise.beta

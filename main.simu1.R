@@ -77,3 +77,4 @@ data.grid <- data.frame(
 result <- eval.star(fitted = mfit1,
                     beta.true = list(beta1.func, beta2.func, beta3.func),
                     data.grid = data.grid)
+result$mise.beta
