@@ -78,7 +78,7 @@ star.fit <- function(data, Lambda, V, Tri, d, r, time.knots, rho,
     Weight <- Weight[inside, inside]
     PsiX0 <- kr(X, Basis$Psi.Q2[inside, ])
     Q2 <- Basis$Q2.all
-
+    coords <- coords[inside, ]
     # generate penalty function
     energQ21 <- as.matrix(Basis$D1)
     energQ22 <- as.matrix(Basis$D2)
