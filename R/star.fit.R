@@ -180,7 +180,8 @@ star.fit <- function(data, Lambda, V, Tri, d, r, time.knots, rho,
   }
 
   MLE <- -n / 2 * (log(2 * pi) + 1) - n * log(sqrt(MSE)) + log(abs(det.func(Ai)))
-  Y.hat <- W %*% theta.hat + alpha.hat * Weight %*% Y
+  mu.hat <- W %*% theta.hat
+  Y.hat <- mu.hat + alpha.hat * Weight %*% Y
   MSE.Y <- Matrix::mean((Y - Y.hat)^2)
   #### calculate standard deviation ####
   se.eta <- NULL
@@ -218,7 +219,7 @@ star.fit <- function(data, Lambda, V, Tri, d, r, time.knots, rho,
   list(n.Z = n.Z, n.X = n.X, best.lambda  = best.lambda,
     theta.hat = theta.hat, alpha.hat = alpha.hat,
     gamma.hat = gamma.hat, beta.hat = beta.hat,
-    se.eta = se.eta,
+    se.eta = se.eta, mu.hat = mu.hat,
     Y.hat = Y.hat, mse = MSE, mle = MLE, MSE.Y = MSE.Y,
     pars = pars
   )

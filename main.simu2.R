@@ -2,12 +2,14 @@ rm(list = ls())
 
 # library
 library(devtools)
-install_github("funstatpackages/BPST")
-install_github("funstatpackages/Triangulation")
-install_github("funstatpackages/TPST")
-install_github("funstatpackages/STARX")
+# install_github("funstatpackages/BPST")
+# install_github("funstatpackages/Triangulation")
+# install_github("funstatpackages/TPST")
+# install_github("funstatpackages/STARX")
 library(Triangulation)
 library(STARX)
+library(parallel)
+library(doParallel)
 
 nS <- 100
 nT <- 30
@@ -41,7 +43,7 @@ Lambda2 <- exp(seq(log(0.001), log(1000), length.out = 5))
 Lambda <- expand.grid(Lambda1, Lambda2)
 
 mfit1 <- star.fit(data = data.simu, Lambda, V.hs.1, Tr.hs.1, d, r, time.knots, rho,
-                 time.bound, return.se = TRUE)
+                 time.bound, return.se = FALSE)
 
 # Estimated parameters in STAR-PLVCM.
 c(mfit1$alpha.hat, mfit1$mse, mfit1$theta.hat[1:mfit1$n.Z])
@@ -82,3 +84,7 @@ result <- eval.star(fitted = mfit1, beta.true, eta.true,
 result$mse.alpha
 result$mse.eta
 result$mise.beta
+
+# non-stationary test -----------------------------------
+p.value <- gof.test(data = data.simu, mfit.full = mfit1, test.idx = 1,
+         nBoot = 5, ncore = 2)
