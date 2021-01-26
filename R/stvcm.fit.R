@@ -71,7 +71,7 @@ stvcm.fit <- function(data, Lambda, V, Tri, d, r, time.knots, rho,
     X <- as.matrix(X)
     Basis <- TPST::basis.tensor(coords[, 1:2], coords[, 3], V, Tri, d, r, time.knots,
                                 rho = rho, time.bound = time.bound)
-    inside <- which(!is.na(Basis$Psi[, 1]))
+    inside <- which(apply(Basis$Psi, 1, function(x) sum(is.na(x)) == 0))
     X <- matrix(X[inside, ], ncol = n.X)
     Z <- Z[inside, ]
     Y <- Y[inside]

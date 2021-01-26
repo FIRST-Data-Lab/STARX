@@ -30,6 +30,7 @@ data("Tr.hs.1")
 data("V.hs.1")
 TriPlot(V.hs.1, Tr.hs.1)
 
+set.seed(2020)
 # generate simulation data
 data.simu <- simu3.data.generating(nS, nT, sigma, alpha, k = 10, horseshoe.b)
 
@@ -81,10 +82,8 @@ alpha.true <- 0.5
 result <- eval.star(fitted = mfit1, beta.true, eta.true,
                     alpha.true, data.grid)
 
-result$mse.alpha
-result$mse.eta
-result$mise.beta
+print(c(result$mse.alpha, result$mse.eta, result$mise.beta))
 
 # non-stationary test -----------------------------------
-p.value <- gof.test(data = data.simu, mfit.full = mfit1, test.idx = 1,
-                    nBoot = 5, ncore = 2)
+# p.value <- gof.test(data = data.simu, mfit.full = mfit1, test.idx = 1,
+                    # vnBoot = 5, ncore = 2)

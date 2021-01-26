@@ -1,7 +1,7 @@
 rm(list = ls())
 
-# library
-library(devtools)
+# install packages from github
+# library(devtools)
 # install_github("funstatpackages/BPST")
 # install_github("funstatpackages/Triangulation")
 # install_github("funstatpackages/TPST")
@@ -9,11 +9,11 @@ library(devtools)
 library(Triangulation)
 library(STARX)
 library(parallel)
-library(doParallel)
+# library(doParallel)
 
 nS <- 100
 nT <- 30
-sigma <- 0.5
+sigma <- 1
 alpha <- 0.5
 N <- 4 # Number of interior knots.
 d <- 2 # Degree of bivariate spline.
@@ -30,6 +30,7 @@ data("Tr.hs.1")
 data("V.hs.1")
 TriPlot(V.hs.1, Tr.hs.1)
 
+set.seed(2020)
 # generate simulation data
 data.simu <- simu2.data.generating(nS, nT, sigma, alpha, k = 10, horseshoe.b)
 
@@ -42,6 +43,9 @@ Lambda1 <- exp(seq(log(0.001), log(1000), length.out = 5))
 Lambda2 <- exp(seq(log(0.001), log(1000), length.out = 5))
 Lambda <- expand.grid(Lambda1, Lambda2)
 
+t0 <- proc.time()
+data.simu$Z <- cbind(data.simu$Z, data.simu$X)
+data.simu$X <- NULL
 mfit1 <- star.fit(data = data.simu, Lambda, V.hs.1, Tr.hs.1, d, r, time.knots, rho,
                  time.bound, return.se = FALSE)
 
@@ -50,9 +54,9 @@ c(mfit1$alpha.hat, mfit1$mse, mfit1$theta.hat[1:mfit1$n.Z])
 # Estimated standard deviation
 mfit1$se.eta
 # sequence of spatial plots of estimated coefficient functions.
-ngrid.x <- 40
-ngrid.y <- 20
-ngrid.t <- 6
+ngrid.x <- 80
+ngrid.y <- 50
+ngrid.t <- 50
 
 fitted.beta <- beta.func.plot(fitted = mfit1, ngrid.x, ngrid.y, ngrid.t,
                               boundary = horseshoe.b, boundary.t = time.bound,
@@ -81,10 +85,6 @@ alpha.true <- 0.5
 result <- eval.star(fitted = mfit1, beta.true, eta.true,
                     alpha.true, data.grid)
 
-result$mse.alpha
-result$mse.eta
-result$mise.beta
+t1 <-proc.time() - t0
+print(c(result$mse.alpha, result$mse.eta, result$mise.beta))
 
-# non-stationary test -----------------------------------
-p.value <- gof.test(data = data.simu, mfit.full = mfit1, test.idx = 1,
-         nBoot = 5, ncore = 2)

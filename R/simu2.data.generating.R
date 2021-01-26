@@ -21,11 +21,36 @@
 #' coefficients.}
 #' \item{location}{A \code{nS * nT} by three matrix with locations of data points.}
 #' \item{W}{weight matrix in STAR.}
+#' @param type distribution type of data points.
 #' @export
-simu2.data.generating <- function(nS, nT, sigma, alpha, k = 10, boundary) {
+simu2.data.generating <- function(nS, nT, sigma, alpha, k = 10, boundary,
+                                  type = "uniform") {
 
-  coord.x <- runif(3 * nS) * 4.5 - 1
-  coord.y <- runif(3 * nS) * 2 - 1
+  if (type == "uniform"){
+    coord.x <- runif(3 * nS) * 4.5 - 1
+    coord.y <- runif(3 * nS) * 2 - 1
+
+    # generate time grids
+    t.all <- rep((1:nT) / nT, each = nS)
+  }
+
+  if (type == "space_uneven") {
+    coord.x <- rnorm(5 * nS, sd = 2) + 3
+    coord.y <- rnorm(5 * nS)
+
+    # generate time grids
+    t.all <- rep((1:nT) / nT, each = nS)
+  }
+
+  if (type == "time_uneven") {
+    coord.x <- rnorm(5 * nS, sd = 2) + 3
+    coord.y <- rnorm(5 * nS)
+
+    # generate time grids
+    nT0 <- floor(nT * 1.5)
+    nT.sample <- sample(1:nT0, nT)
+    t.all <- rep(nT.sample / nT0, each = nS)
+  }
   coord <- cbind(coord.x, coord.y)
   fsb <- list(mgcv::fs.boundary())[[1]]
   names(fsb) <- c("coord.x", "coord.y")
@@ -36,12 +61,10 @@ simu2.data.generating <- function(nS, nT, sigma, alpha, k = 10, boundary) {
   S0 <- coord[ind, ]
   S0 <- S0[1:nS, ]
 
-  # generate time grids
-  T0 <- 1:nT
+
 
   # locations
-  loc.Sample <- cbind(rep(S0[, 1], nT), rep(S0[, 2], nT),
-                      rep((1:nT) / nT, each = nS))
+  loc.Sample <- cbind(rep(S0[, 1], nT), rep(S0[, 2], nT), t.all)
 
   eta0 <- 5
   eta1 <- 1

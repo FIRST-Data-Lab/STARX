@@ -24,7 +24,7 @@
 #' @export
 simu3.data.generating <- function(nS, nT, sigma, alpha, k = 10, boundary) {
 
-  coord.x <- rnorm(5 * nS, sd = 1) + 3
+  coord.x <- rnorm(5 * nS, sd = 2) + 3
   coord.y <- rnorm(5 * nS)
 
   coord <- cbind(coord.x, coord.y)
